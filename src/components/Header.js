@@ -21,11 +21,30 @@ const CartIcon = () => (
   </svg>
 );
 
+const MenuIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M4 6h16M4 12h16M4 18h16"
+    />
+  </svg>
+);
+
 const Header = () => {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState('');
   const [cartCount, setCartCount] = useState(0);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
   const userEmail = sessionStorage.getItem('userEmail');
@@ -93,6 +112,9 @@ const Header = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '1.5rem',
+      '@media (max-width: 768px)': {
+        display: 'none',
+      },
     },
     navLink: (linkName) => ({
       color: isHovered === linkName ? '#c72032' : '#2c3e50',
@@ -119,6 +141,9 @@ const Header = () => {
       display: 'flex',
       alignItems: 'center',
       gap: '1rem',
+      '@media (max-width: 768px)': {
+        display: 'none',
+      },
     },
     loginBtn: {
       background: 'transparent',
@@ -220,6 +245,40 @@ const Header = () => {
       background: '#e1e1e1',
       margin: '0.5rem 0',
     },
+    mobileMenuButton: {
+      display: 'none',
+      background: 'none',
+      border: 'none',
+      color: '#c72032',
+      cursor: 'pointer',
+      padding: '0.5rem',
+      '@media (max-width: 768px)': {
+        display: 'block',
+      },
+    },
+    
+    mobileMenu: {
+      display: 'none',
+      position: 'fixed',
+      top: '70px',
+      left: 0,
+      right: 0,
+      background: 'white',
+      padding: '1rem',
+      boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+      '@media (max-width: 768px)': {
+        display: isMobileMenuOpen ? 'block' : 'none',
+      },
+    },
+    
+    mobileNavLink: {
+      display: 'block',
+      padding: '1rem',
+      color: '#2c3e50',
+      textDecoration: 'none',
+      borderBottom: '1px solid #eee',
+      fontWeight: '600',
+    },
   };
 
   const AccountButton = () => (
@@ -310,6 +369,13 @@ const Header = () => {
           <Link to={isAdmin ? '/' : '/'} style={styles.logo}>
             {isAdmin ? 'The KD Company' : 'The KD Company'}
           </Link>
+          
+          <button
+            style={styles.mobileMenuButton}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <MenuIcon />
+          </button>
 
           <div style={styles.navLinks}>
             {navLinks()}
@@ -345,6 +411,59 @@ const Header = () => {
           )}
         </div>
       </nav>
+
+      {/* Mobile Menu */}
+      <div style={styles.mobileMenu}>
+        {navLinks().map((link, index) => (
+          <Link
+            key={index}
+            to={link.props.to}
+            style={styles.mobileNavLink}
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            {link.props.children}
+          </Link>
+        ))}
+        
+        {userEmail ? (
+          <>
+            {isAdmin ? (
+              <Link to="/admin" style={styles.mobileNavLink}>Admin Dashboard</Link>
+            ) : (
+              <>
+                <Link to="/profile" style={styles.mobileNavLink}>My Profile</Link>
+                <Link to="/orders" style={styles.mobileNavLink}>My Orders</Link>
+                <Link to="/settings" style={styles.mobileNavLink}>Settings</Link>
+              </>
+            )}
+            <button
+              onClick={() => {
+                handleLogout();
+                setIsMobileMenuOpen(false);
+              }}
+              style={{
+                ...styles.mobileNavLink,
+                width: '100%',
+                textAlign: 'left',
+                border: 'none',
+                background: 'none',
+                cursor: 'pointer',
+                color: '#c72032',
+              }}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link to="/login" style={styles.mobileNavLink}>Login</Link>
+        )}
+        
+        {!isAdmin && (
+          <Link to="/cart" style={styles.mobileNavLink}>
+            Cart {cartCount > 0 && `(${cartCount})`}
+          </Link>
+        )}
+      </div>
     </header>
   );
 };

@@ -3,22 +3,22 @@ import styled, { keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 
 // Import your images with relative paths
-import design1 from '/Users/dileeppillai/Documents/sem/kdcompany/thekdcompany/src/assets/p_01.png';
-import design2 from '/Users/dileeppillai/Documents/sem/kdcompany/thekdcompany/src/assets/p_02.png';
-import design3 from '/Users/dileeppillai/Documents/sem/kdcompany/thekdcompany/src/assets/p_03.png';
-import product1 from '/Users/dileeppillai/Documents/sem/kdcompany/thekdcompany/src/assets/bmw-m-party-web-6656-1633454533.jpg.avif';
+import design1 from '/Users/dileeppillai/Documents/sem/kdcompanyv2/kdcompany/src/assets/images/p_01.png';
+import design2 from '/Users/dileeppillai/Documents/sem/kdcompanyv2/kdcompany/src/assets/images/p_02.png';
+import design3 from '/Users/dileeppillai/Documents/sem/kdcompanyv2/kdcompany/src/assets/images/p_03.png';
+import product1 from '/Users/dileeppillai/Documents/sem/kdcompanyv2/kdcompany/src/assets/bmw-m-party-web-6656-1633454533.jpg.avif';
 
-import heroBg from '/Users/dileeppillai/Documents/sem/kdcompany/thekdcompany/src/assets/p_01.png'; // Add a hero background image
+import heroBg from '/Users/dileeppillai/Documents/sem/kdcompanyv2/kdcompany/src/assets/p_01.png'; // Add a hero background image
 
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const slideIn = keyframes`
-  from { transform: translateX(-100px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-`;
+// const slideIn = keyframes`
+//   from { transform: translateX(-100px); opacity: 0; }
+//   to { transform: translateX(0); opacity: 1; }
+// `;
 
 const HomeContainer = styled.div`
   min-height: 100vh;
@@ -217,7 +217,7 @@ const Home = () => {
               <CardContent>
                 <CardTitle>{design.name}</CardTitle>
                 <p>{design.description}</p>
-                <CardButton to={`/designs/${design.id}`}>View Details</CardButton>
+                <CardButton to={`/products`}>View Details</CardButton>
               </CardContent>
             </Card>
           ))}
